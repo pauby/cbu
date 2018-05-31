@@ -1,0 +1,106 @@
+        <file   source      = ''
+                destination = 'source\private'/>
+        <file   source      = ''
+                destination = 'source\en-US'/>
+        <file   source      = 'about_MODULENAME.help.txt'
+                destination = 'source\en-US\about_${PLASTER_PARAM_ModuleName}.help.txt'/>
+        <modify path = 'source\en-US\about_${PLASTER_PARAM_ModuleName}.help.txt'>
+            <replace>
+                <original>__about_MODULE__</original>
+                <substitute expand = 'true'>about_${PLASTER_PARAM_ModuleName}</substitute>
+            </replace>
+            <replace>
+                <original>__SHORT_DESCRIPTION__</original>
+                <substitute expand = 'true'>${PLASTER_PARAM_ModuleDesc}</substitute>
+            </replace>
+            <replace>
+                <original>__LONG_DESCRIPTION__</original>
+                <substitute expand = 'true'>${PLASTER_PARAM_ModuleDesc}</substitute>
+            </replace>
+        </modify>
+        <file source='' destination='tests\' condition='$PLASTER_PARAM_Options -contains "Pester"'/>
+        <file source='' destination='tests\public' condition='$PLASTER_PARAM_Options -contains "Pester"'/>
+        <file source='' destination='tests\private' condition='$PLASTER_PARAM_Options -contains "Pester"'/>
+        <file   source      = '.build.ps1'
+                destination = ''/>
+        <file   source      = 'build.configuration.psd1'
+                destination = ''/>
+        <file   source      = '.gitignore'
+                destination = ''
+                condition   = '$PLASTER_PARAM_Options -contains "Git"'/>
+        <file   source      = 'CHANGELOG.md'
+                destination = ''
+                condition   = '$PLASTER_PARAM_Options -contains "Git"'/>
+        <modify path = 'CHANGELOG.md'
+                condition   = '$PLASTER_PARAM_Options -contains "Git"'>
+            <replace>
+                <original>__VERSION__</original>
+                <substitute expand = 'true'>${PLASTER_PARAM_Version}</substitute>
+            </replace>
+        </modify>
+        <file   source      = 'README.md'
+                destination = ''
+                condition   = '$PLASTER_PARAM_Options -contains "Git"'/>
+        <modify path = 'README.md'
+                condition   = '$PLASTER_PARAM_Options -contains "Git"'>
+            <replace>
+                <original>__MODULENAME__</original>
+                <substitute expand = 'true'>${PLASTER_PARAM_ModuleName}</substitute>
+            </replace>
+            <replace>
+                <original>__DESCRIPTION__</original>
+                <substitute expand = 'true'>${PLASTER_PARAM_ModuleDesc}</substitute>
+            </replace>
+        </modify>
+        <file   source      = 'appveyor.yml'
+                destination = ''
+                condition   = '$PLASTER_PARAM_Options -contains "AppVeyor"'/>
+        <file   source      = 'MIT-LICENSE'
+                destination = 'LICENSE'
+                condition   = '$PLASTER_PARAM_License -contains "MIT"'/>
+        <message condition='$PLASTER_PARAM_Options -contains "Manifest"'>
+        
+Creating Module Manifest for module $PLASTER_PARAM_ModuleName ... 
+
+</message>
+        <newModuleManifest  destination         = 'source\${PLASTER_PARAM_ModuleName}.psd1'
+                            moduleVersion       = '$PLASTER_PARAM_Version'
+                            rootModule          = '${PLASTER_PARAM_ModuleName}.psm1'
+                            author              = '$PLASTER_PARAM_FullName'
+                            description         = '$PLASTER_PARAM_ModuleDesc'
+                            encoding            = 'UTF8-NoBOM'
+                            openInEditor        = 'true'/>
+        <modify path = 'source\${PLASTER_PARAM_ModuleName}.psd1'>
+            <replace>
+                <original>FunctionsToExport\s*=\s*'\*'</original>
+                <substitute>FunctionsToExport = ''</substitute>
+            </replace>
+            <replace>
+                <original>CmdletsToExport\s*=\s*'\*'</original>
+                <substitute>CmdletsToExport = ''</substitute>
+            </replace>
+            <replace>
+                <original>VariablesToExport\s*=\s*'\*'</original>
+                <substitute>VariablesToExport = ''</substitute>
+            </replace>
+            <replace>
+                <original>AliasesToExport\s*=\s*'\*'</original>
+                <substitute>AliasesToExport = ''</substitute>
+            </replace>
+        </modify>
+        <requireModule name="Pester" condition="$PLASTER_PARAM_AddTest -eq 'Yes'" minimumVersion="3.4.0" message="Without Pester, you will not be able to run the provided Pester test to validate your module manifest file.`nWithout version 3.4.0, VS Code will not display Pester warnings and errors in the Problems panel."/>
+        <message>
+
+Your new PowerShell module project '$PLASTER_PARAM_ModuleName' has been created.
+
+        </message>
+        <message condition='$PLASTER_PARAM_Options -contains "Pester"'>
+
+* Add additional tests to the test directory;
+* You can run the Pester tests in your project by executing the 'test' task;
+* Press Ctrl+P, then type 'task test' in VS Code;
+        </message>
+        <message condition='$PLASTER_PARAM_Options -contains "Git"'>
+* Remember to initialise this repository using `git init`;
+        </message>
+        <message></message>

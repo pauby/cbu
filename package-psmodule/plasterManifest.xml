@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<plasterManifest schemaVersion="1.0" 
+    xmlns="http://www.microsoft.com/schemas/PowerShell/Plaster/v1">
+    <metadata>
+        <name>ChocolateyPackageBuilderforPowerShellModule</name>
+        <id>8facadc4-91fa-49be-7ae5-c761bf76adf6</id>
+        <version>1.0.0</version>
+        <title>Chocolatey Package Builder for PowerShell Module</title>
+        <description>Plaster template to create a Chocolatey package to install a PowerShell module.</description>
+        <author>Paul Broadwith (https://github.com/pauby/cbu)</author>
+        <tags>Chocolatey, PowerShell, Module, Build</tags>
+    </metadata>
+    <parameters>
+        <parameter  name    = 'PackageID'
+                    type    = 'text'
+                    prompt  = 'Enter the Chocolatey Package ID'/>
+        <parameter  name    = 'PackageTitle'
+                    type    = 'text'
+                    prompt  = 'Enter the Package Title'/> 
+        <parameter  name    = 'PackageVersion'
+                    type    = 'text'
+                    default = '1.0.0'
+                    prompt  = 'Enter the Package Version (this is generally the same as the module version you will be packaging)'/>
+        <parameter  name    = 'PackageOwners'
+                    type    = 'text'
+                    prompt  = 'Enter the Package Owners Chocolatey usernames, separated by commas'/>
+        <parameter  name    = 'PackageSourceUrl'
+                    type    = 'text'
+                    prompt  = 'Enter the URL for the Package source (this is where the source of your package is stored - Github?)'/>
+        <parameter  name    = 'PackageSoftwareAuthors'
+                    type    = 'text'
+                    prompt  = 'Enter the authors of the packages software (for example Microsoft Corporation)'/>
+        <parameter  name    = 'PackageProjectUrl'
+                    type    = 'text'
+                    prompt  = 'Enter the URL for the software project / home page (this is generally the home page of the software)'/>
+        <parameter  name    = 'PackageIconUrl'
+                    type    = 'text'
+                    default = ''
+                    prompt  = 'Enter the URL for the software icon (if this is stored on Github, then please use the Production URL from RawGit (https://rawgit.com/))'/>
+        <parameter  name    = 'ProjectSourceUrl'
+                    type    = 'text'
+                    prompt  = 'Enter the URL for the software source - DO NOT add a final / (for a module this will generally be the GitHub repository)'/>
+        <parameter  name    = 'LicenseUrl'
+                    type    = 'text'
+                    default = '${PLASTER_PARAM_ProjectSourceUrl}/blob/master/LICENSE'
+                    prompt  = 'Enter the URL for the software license'/>
+        <parameter  name    = 'ProjectDocsUrl'
+                    type    = 'text'
+                    default = '${PLASTER_PARAM_ProjectSourceUrl}/blob/master/README.md'
+                    prompt  = 'Enter the URL for the software documentation (for a module this can be the GitHUb repository README file)'/>
+        <parameter  name    = 'ProjectBugTrackerUrl'
+                    type    = 'text'
+                    default = '${PLASTER_PARAM_ProjectSourceUrl}/issues'
+                    prompt  = 'Enter the URL for the software bug or issue tracker (for Github this may be the link to Issues)'/>
+        <parameter  name    = 'PackageTags'
+                    type    = 'text'
+                    default = 'admin powershell module'
+                    prompt  = 'Enter the tags for the package separated by spaces (note that you should not enter the package id as a tag)'/>
+        <parameter  name    = 'ProjectReleaseNotes'
+                    type    = 'text'
+                    default = '${PLASTER_PARAM_ProjectSourceUrl}/blob/master/CHANGELOG.md'
+                    prompt  = 'Enter the URL OR text for the project release notes (this can be multiple lines and include markdown)'/>
+        <parameter  name    = 'ModuleName'
+                    type    = 'text'
+                    prompt  = 'Enter the name of the module to package'/>
+        <parameter  name    = 'ModulePowerShellVersion'
+                    type    = 'text'
+                    prompt  = 'Enter the minimum version of PowerShell required by the module'/>
+    </parameters>
+    <content>
+        <message>&#10;&#10;Scaffolding your Chocolatey package ...&#10;&#10;</message>
+        <file   source      = ''
+                destination = 'tools\'/>
+        <file   source      = ''
+                destination = 'tools\${PLASTER_PARAM_ModuleName}'/>
+        <templateFile source        = 'nuspec.template'
+                      destination   = '${PLASTER_PARAM_PackageID}.nuspec'
+                      encoding      = 'UTF8'
+                      openInEditor  = 'true' />
+    </content>
+</plasterManifest>
